@@ -39,7 +39,7 @@ fn main() -> std::io::Result<()> {
 
             match s.read(buf) {
                 Ok(0) => {
-                    println!("client disconnected: {}", s.peer_addr().unwrap().to_string());
+                    println!("client disconnected: {}", s.peer_addr()?.to_string());
                     streams.remove(i);
                 }
                 Ok(m) => {
