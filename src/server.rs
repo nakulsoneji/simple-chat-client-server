@@ -19,7 +19,6 @@ fn send_to_streams(streams: &mut Vec<TcpStream>, data: &[u8]) {
 fn main() -> std::io::Result<()> {
     let listener = TcpListener::bind("127.0.0.1:8000")?;
     let _ = listener.set_nonblocking(true)?;
-
     let mut streams: Vec<TcpStream> = vec![];
 
     for connection in listener.incoming() {
@@ -59,6 +58,6 @@ fn main() -> std::io::Result<()> {
             i += 1;
         }
     }
-
+    
     Ok(())
 }
