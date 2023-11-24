@@ -40,7 +40,8 @@ impl eframe::App for MyApp {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading(format!("Client {}", self.socket.local_addr().unwrap().to_string()));
-            let response = ui.add(egui::TextEdit::singleline(&mut self.text));
+            let message_label = ui.label("Message: ");
+            let response = ui.add(egui::TextEdit::singleline(&mut self.text)).labelled_by(message_label.id);
 
             if response.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter)) {
                 println!("{}", self.text);

@@ -22,11 +22,11 @@ fn main() -> std::io::Result<()> {
 
     let mut streams: Vec<TcpStream> = vec![];
 
-    loop {
-        let connection = listener.accept();
+    for connection in listener.incoming() {
         match connection {
-            Ok((stream, _socket)) => {
+            Ok(stream) => {
                 stream.set_nonblocking(true)?;
+                println!("client connected: {}", stream.peer_addr()?.to_string());
                 streams.push(stream);
             }
             Err(_) => {}
@@ -50,8 +50,6 @@ fn main() -> std::io::Result<()> {
                         std::str::from_utf8(&buf[0..m]).unwrap().trim()
                     );
                     send_to_streams(&mut streams, buf);
-                    println!("here")
-                    
                 }
                 Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {}
                 Err(_) => {
@@ -61,4 +59,6 @@ fn main() -> std::io::Result<()> {
             i += 1;
         }
     }
+
+    Ok(())
 }
