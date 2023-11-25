@@ -1,12 +1,14 @@
 use std::io::prelude::*;
 use std::net::{TcpListener, TcpStream};
 
+const PORT: usize = 8000;
+
 fn username(stream: &TcpStream) -> String {
     return format!("{}", stream.peer_addr().unwrap().to_string());
 }
 
-fn send_to_streams(streams: &mut Vec<TcpStream>, data: &[u8]) {
-    for sw in streams.iter_mut() {
+fn send_to_streams(streams: &Vec<TcpStream>, data: &[u8]) {
+    for mut sw in streams.iter() {
         match sw.write(data) {
             Ok(_) => {} 
             Err(_) => {
@@ -17,7 +19,8 @@ fn send_to_streams(streams: &mut Vec<TcpStream>, data: &[u8]) {
 }
 
 fn main() -> std::io::Result<()> {
-    let listener = TcpListener::bind("127.0.0.1:8000")?;
+    let listener = TcpListener::bind(format!("127.0.0.1:{PORT}"))?;
+    println!("listening on {}", listener.local_addr().unwrap().to_string());
     let _ = listener.set_nonblocking(true)?;
     let mut streams: Vec<TcpStream> = vec![];
 
