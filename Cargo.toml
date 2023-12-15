@@ -13,9 +13,14 @@ path = "./src/server.rs"
 name = "client"
 path = "./src/client.rs"
 
+[[bin]]
+name = "server-async"
+path = "./src/server-async.rs"
+
 [dependencies]
 eframe = "0.24.0"
 egui = { version = "0.24.0", features = ["deadlock_detection"] }
 egui_extras = "0.24.0"
 getrandom = "0.2.11"
 rand = "0.8.5"
+tokio = { version = "1.35.0", features = ["macros", "rt-multi-thread", "sync", "io-util", "net"] }
